@@ -49,6 +49,8 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: npx eas-cli build --platform android --profile preview --non-interactive
       - name: Download APK artifact
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           APK_URL=$(eas build:list --platform android --status finished --limit 1 --non-interactive --json | npx --yes node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d)[0].artifacts.buildUrl)")
           curl -L "$APK_URL" -o lightway-cameroon.apk
