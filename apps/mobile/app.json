@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "LightWay Cameroon",
+    "slug": "lightway-cameroon",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": ["android"],
+    "android": {
+      "package": "cm.lightway.app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "TODO-replace-with-eas-project-id"
+      }
+    }
+  }
+}
