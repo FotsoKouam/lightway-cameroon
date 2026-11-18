@@ -45,7 +45,9 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
       - name: Build APK (EAS)
-        run: eas build --platform android --profile preview --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx eas-cli build --platform android --profile preview --non-interactive
       - name: Download APK artifact
         run: |
           APK_URL=$(eas build:list --platform android --status finished --limit 1 --non-interactive --json | npx --yes node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d)[0].artifacts.buildUrl)")
