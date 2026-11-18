@@ -10,13 +10,13 @@ export class AccountsService {
 
   async getMe(id: string) {
     const account = await this.prisma.account.findUnique({ where: { id } });
-    const { passwordHash, ...safe } = account;
+    const { passwordHash: _pw1, ...safe } = account;
     return safe;
   }
 
   async updateMe(id: string, dto: UpdateProfileDto) {
     const account = await this.prisma.account.update({ where: { id }, data: dto });
-    const { passwordHash, ...safe } = account;
+    const { passwordHash: _pw2, ...safe } = account;
     return safe;
   }
 

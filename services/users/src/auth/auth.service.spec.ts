@@ -1,4 +1,5 @@
 import { AuthService } from './auth.service';
+import * as bcrypt from 'bcryptjs';
 
 function makeMockPrisma(account: any) {
   return {
@@ -10,8 +11,6 @@ function makeMockPrisma(account: any) {
 }
 
 const mockJwt = { sign: jest.fn().mockReturnValue('token') };
-
-const bcrypt = require('bcryptjs');
 
 describe('AuthService — blocking logic', () => {
   it('blocks account after 5 failed attempts', async () => {
