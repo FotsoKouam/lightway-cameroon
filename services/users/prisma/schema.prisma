@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum AccountKind {
+  USER
+  DRIVER
+  ADMIN
+  INSTITUTION
+  COMPANY
+}
+
+enum Language {
+  FR
+  EN
+}
+
+enum AccountStatus {
+  ACTIVE
+  BLOCKED
+}
+
+model Account {
+  id               String        @id @default(uuid())
+  identifier       String        @unique
+  contact          String        @unique
+  name             String
+  passwordHash     String
+  kind             AccountKind
+  language         Language      @default(FR)
+  status           AccountStatus @default(ACTIVE)
+  failedLoginCount Int           @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("accounts")
+}
