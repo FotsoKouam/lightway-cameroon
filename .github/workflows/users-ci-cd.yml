@@ -1,0 +1,58 @@
+name: Users CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/users/**'
+      - '.github/workflows/users-ci-cd.yml'
+  pull_request:
+    paths:
+      - 'services/users/**'
+      - '.github/workflows/users-ci-cd.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/users
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: services/users/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+        env:
+          DATABASE_URL: postgresql://fake:fake@fake/fake
+          DIRECT_URL: postgresql://fake:fake@fake/fake
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/users
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: services/users/package-lock.json
+      - run: npm ci
+      - name: Run migrations
+        run: npm run prisma:migrate:deploy
+        env:
+          DATABASE_URL: ${{ secrets.USERS_DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.USERS_DIRECT_URL }}
+      - name: Trigger Render deploy
+        run: curl -fsS -X POST "$RENDER_USERS_DEPLOY_HOOK"
+        env:
+          RENDER_USERS_DEPLOY_HOOK: ${{ secrets.RENDER_USERS_DEPLOY_HOOK }}
