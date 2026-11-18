@@ -26,12 +26,11 @@ Aucun écart fonctionnel par rapport au brief.
 
 | Vérification | Résultat |
 |---|---|
-| Schéma Prisma (structure) | ✅ Schéma correct — syntaxe vérifiée visuellement |
-| `npm install` (users, CI Linux) | ✅ Attendu — les dépendances sont classiques ; Node 24 + antivirus Windows ont empêché la vérification locale (exit 45) |
-| `npm run build` (users) | ⚠️ Non vérifié localement — prévu de passer en CI Linux (pas de dépendance native depuis passage à bcryptjs) |
-| `npm run lint` (users) | ⚠️ Non vérifié localement |
-| `npm test` (users) | ⚠️ Non vérifié localement |
-| `npm install` + `npm run build` (web) | ⚠️ Non vérifié localement (même contrainte Windows) |
+| `prisma validate` (schéma) | ✅ Schéma valide (Prisma 5.22) |
+| `npm test` (users) | ✅ 3/3 tests passent (health + 2 tests blocage) |
+| `tsc --noEmit` (users) | ✅ 0 erreur TypeScript |
+| `npm run build` (web) | ⚠️ Non vérifié — `npm install` utilise `--no-bin-links` sur Windows ; CI Linux vérifiera |
+| `npm run lint` (users + web) | ⚠️ Binaires ESLint absents du .bin en mode --no-bin-links ; CI Linux vérifiera |
 | Migrations réelles (Neon) | ⚠️ Non testé — pas de base de données disponible |
 
 ## 4. Ce que je dois configurer à la main

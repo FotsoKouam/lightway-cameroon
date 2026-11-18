@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcryptjs';
-import { AccountKind } from '@prisma/client';
+import { AccountKind, Language } from '@prisma/client';
 
 const MAX_FAILED = 5;
 
@@ -26,7 +26,7 @@ export class AuthService {
         name: dto.name,
         passwordHash,
         kind: dto.kind as AccountKind,
-        language: dto.language || 'FR',
+        language: dto.language || Language.FR,
       },
     });
     const { passwordHash: _, ...safe } = account;
