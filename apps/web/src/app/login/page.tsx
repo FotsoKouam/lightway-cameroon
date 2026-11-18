@@ -30,7 +30,7 @@ export default function LoginPage() {
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button style={btnStyle} type="submit">Se connecter</button>
       </form>
-      <p><Link href="/register">Pas encore de compte ? S'inscrire</Link></p>
+      <p><Link href="/register">Pas encore de compte ? S&apos;inscrire</Link></p>
     </main>
   );
 }
