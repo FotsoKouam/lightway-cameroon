@@ -8,12 +8,11 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum AccountKind {
+enum Kind {
   USER
-  DRIVER
   ADMIN
-  INSTITUTION
-  COMPANY
+  ENTERPRISE
+  INSTITUTIONAL
 }
 
 enum Language {
@@ -21,23 +20,22 @@ enum Language {
   EN
 }
 
-enum AccountStatus {
+enum Status {
   ACTIVE
   BLOCKED
+  PENDING
 }
 
 model Account {
-  id               String        @id @default(uuid())
-  identifier       String        @unique
-  contact          String        @unique
+  id               String   @id @default(uuid())
+  identifier       String   @unique
+  contact          String?
   name             String
   passwordHash     String
-  kind             AccountKind
-  language         Language      @default(FR)
-  status           AccountStatus @default(ACTIVE)
-  failedLoginCount Int           @default(0)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-
-  @@map("accounts")
+  kind             Kind     @default(USER)
+  language         Language @default(FR)
+  status           Status   @default(PENDING)
+  failedLoginCount Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
